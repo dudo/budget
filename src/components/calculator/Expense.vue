@@ -1,6 +1,8 @@
 <template>
   <div class="entry expense">
-    <p><span>{{ name }}</span><span>{{ value }}</span><span>{{ type }}</span></p>
+    <p>
+      <span>{{ name }}</span> <span>{{ value }}</span>
+    </p>
   </div>
 </template>
 

@@ -1,10 +1,16 @@
 <template>
   <div class="entry asset">
-    <p><span>{{ name }}</span><span>{{ value }}</span></p>
+    <p>
+      <span>{{ name }}</span> <span>{{ value }}</span>
+      monthly revenue: <span>{{ monthlyRevenueValue }}</span>
+    </p>
+    <form action=""/>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   name: 'Asset',
   props: {
@@ -16,18 +22,19 @@ export default {
       type: Number,
       default: 0,
     },
-    monthly_return_type: {
+    monthlyRevenueType: {
       type: Number,
       default: 0,
     },
-    monthly_return_type_enum: {
-      type: Object,
-      default: () => Object.freeze({ dollars: 0, percent: 1 }),
-    },
-    monthly_return_value: {
+    monthlyRevenueValue: {
       type: Number,
       default: 0,
     },
+  },
+  methods: {
+    ...mapMutations([
+
+    ]),
   },
 };
 </script>

@@ -10,8 +10,7 @@
       v-if="dataKey.startsWith('expenses')"
       v-for="(entry, index) in entries"
       v-bind="entry"
-      :key="index"
-      :type="dataKey.split('_')[dataKey.split('_').length - 1]" />
+      :key="index" />
     <Asset
       v-if="dataKey === 'assets'"
       v-for="(entry, index) in entries"
@@ -42,19 +41,16 @@ export default {
       type: String,
       default: '',
     },
+    entries: {
+      type: Array,
+      default: () => [],
+    },
   },
   components: {
     Income,
     Expense,
     Asset,
     Liability,
-  },
-  computed: {
-    entries(dataKey) {
-      // TODO
-      // return this.$store.entries[dataKey];
-      return [{}, {}];
-    },
   },
 };
 </script>

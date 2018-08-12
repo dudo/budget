@@ -1,10 +1,15 @@
 <template>
   <div class="entry liability">
-    <p><span>{{ name }}</span><span>{{ value }}</span><span>{{ monthly_obligation }}</span></p>
+    <p>
+      <span>{{ name }}</span> <span>{{ value }}</span>
+      monthly obligation: <span>{{ monthlyObligationValue }}</span>
+    </p>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   name: 'Liability',
   props: {
@@ -16,10 +21,19 @@ export default {
       type: Number,
       default: 0,
     },
-    monthly_obligation: {
+    monthlyObligationType: {
       type: Number,
       default: 0,
     },
+    monthlyObligationValue: {
+      type: Number,
+      default: 0,
+    },
+  },
+  methods: {
+    ...mapMutations([
+
+    ]),
   },
 };
 </script>
