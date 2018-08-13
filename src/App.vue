@@ -28,4 +28,13 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+h1, h2, h3 {
+  text-align: center;
+}
 </style>

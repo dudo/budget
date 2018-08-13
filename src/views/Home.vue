@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home wrapper">
     <h1>Budget</h1>
 
     <h2>Terms</h2>

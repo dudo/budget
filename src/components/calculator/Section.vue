@@ -25,10 +25,10 @@
 </template>
 
 <script>
-import Income from '@/components/calculator/Income.vue';
-import Expense from '@/components/calculator/Expense.vue';
-import Asset from '@/components/calculator/Asset.vue';
-import Liability from '@/components/calculator/Liability.vue';
+import Income from '@/components/calculator/entries/Income.vue';
+import Expense from '@/components/calculator/entries/Expense.vue';
+import Asset from '@/components/calculator/entries/Asset.vue';
+import Liability from '@/components/calculator/entries/Liability.vue';
 
 export default {
   name: 'Section',
@@ -55,6 +55,18 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+.group {
+  margin: 10px auto;
+}
+.entry {
+  display: flex;
+  justify-content: flex-end;
+}
+.entry span:last-of-type {
+  width: 100px;
+  display: inline-block;
+  padding-left: 10px;
+}
 
 </style>

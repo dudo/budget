@@ -1,21 +1,51 @@
 <template>
-  <div class='calculator'>
-    <div class='wrapper'>
-      <div class='column'>
-        <Section
-          v-for="section in incomeStatement"
-          v-bind="section"
-          :key="section.dataKey" />
-      </div>
-      <div class='column'>
-        <Section
-          v-for="section in balanceSheet"
-          v-bind="section"
-          :key="section.dataKey" />
-        <div>cashflow: {{ cashFlow }}</div>
-        <div>dscr: {{ dscr }}</div>
-        <div>months of debt remaining: {{ monthsOfDebtRemaining }}</div>
-      </div>
+  <div class='calculator wrapper'>
+    <div class='column'>
+      <Section
+        v-for="section in incomeStatement"
+        v-bind="section"
+        :key="section.dataKey" />
+    </div>
+    <div class='column'>
+      <Section
+        v-for="section in balanceSheet"
+        v-bind="section"
+        :key="section.dataKey" />
+      <section>
+        <h3>Totals</h3>
+        <div class="group">
+          <div class="entry total">
+            <div>
+              <span>cashflow</span>
+              <span>
+                {{
+                  cashFlow.toLocaleString('en', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0
+                  })
+                }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="group">
+          <div class="entry total">
+            <div>
+              <span>dscr</span>
+              <span>{{ dscr.toPrecision(3) }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="group">
+          <div class="entry total">
+            <div>
+              <span>months of debt remaining</span>
+              <span>{{ Math.round(monthsOfDebtRemaining) }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -161,15 +191,16 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
-  display: grid;
-  grid-template-columns: 1fr;
-}
 @media (min-width: 1000px) {
   .wrapper {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+h2, h3 {
+  text-align: center;
+}
+
 .column {
   width: 50%;
   margin: 10px auto;
