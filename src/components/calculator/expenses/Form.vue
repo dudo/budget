@@ -19,24 +19,30 @@
 export default {
   name: 'ExpenseForm',
   props: {
-    expenseType: {
+    dataKey: {
       type: String,
-      default: '',
+      default: 'expensesBank',
     },
   },
-  data: () => ({
-    form: {
-      name: '',
-      value: 0,
-    },
-  }),
+  data() {
+    return {
+      form: this.defaults(),
+    };
+  },
   methods: {
+    defaults() {
+      return {
+        name: '',
+        value: 0,
+      };
+    },
     submit() {
       this.$store.commit({
         type: 'addEntry',
-        entry: Object.assign({ type: this.expenseType }, this.form),
-        entryType: 'expenses',
+        entry: this.form,
+        entryType: this.dataKey,
       });
+      this.form = this.defaults();
     },
   },
 };

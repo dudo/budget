@@ -39,21 +39,27 @@
 <script>
 export default {
   name: 'AssetForm',
-  data: () => ({
-    form: {
-      name: '',
-      value: 0,
-      monthlyRevenueType: 0,
-      monthlyRevenueValue: 0,
-    },
-  }),
+  data() {
+    return {
+      form: this.defaults(),
+    };
+  },
   methods: {
+    defaults() {
+      return {
+        name: '',
+        value: 0,
+        monthlyRevenueType: 0,
+        monthlyRevenueValue: 0,
+      };
+    },
     submit() {
       this.$store.commit({
         type: 'addEntry',
         entry: this.form,
         entryType: 'assets',
       });
+      this.form = this.defaults();
     },
   },
 };

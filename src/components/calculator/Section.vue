@@ -10,6 +10,7 @@
       v-if="dataKey.startsWith('expenses')"
       v-for="(entry, index) in entries"
       v-bind="entry"
+      :data-key="dataKey"
       :key="index" />
     <Asset
       v-if="dataKey === 'assets'"
@@ -25,7 +26,7 @@
       v-if="dataKey === 'incomes'" />
     <ExpenseForm
       v-if="dataKey.startsWith('expenses')"
-      :expense-type="dataKey.split('-')[dataKey.split('-').length - 1]" />
+      :data-key="dataKey" />
     <AssetForm
       v-if="dataKey === 'assets'" />
     <LiabilityForm

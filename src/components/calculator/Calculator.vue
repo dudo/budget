@@ -40,8 +40,7 @@ export default {
     liabilityExpense() {
       return {
         name: 'Liability Obligations',
-        value: Math.min(this.liabilityObligations, this.creditCardObligations),
-        type: 'bank',
+        value: Math.max(this.liabilityObligations, this.creditCardObligations),
         removable: false,
       };
     },
@@ -84,12 +83,11 @@ export default {
         }
       });
       return values
-        .reduce((a, b) => a - b, 0);
+        .reduce((a, b) => a + b, 0);
     },
     creditCardObligations() {
-      return this.expenses
-        .filter(x => x.type === 'cc')
-        .reduce((acc, x) => acc - x.value, 0);
+      return this.expensesCC
+        .reduce((acc, x) => acc + x.value, 0);
     },
     incomeStatement() {
       return [
@@ -101,16 +99,14 @@ export default {
         },
         {
           title: 'Bank Expenses',
-          dataKey: 'expenses-bank',
-          entries: this.expenses
-            .filter(x => x.type === 'bank')
+          dataKey: 'expensesBank',
+          entries: this.expensesBank
             .concat([this.liabilityExpense]),
         },
         {
           title: 'Credit Card Expenses',
-          dataKey: 'expenses-cc',
-          entries: this.expenses
-            .filter(x => x.type === 'cc'),
+          dataKey: 'expensesCC',
+          entries: this.expensesCC,
         },
       ];
     },
@@ -130,7 +126,8 @@ export default {
     },
     ...mapState([
       'incomes',
-      'expenses',
+      'expensesBank',
+      'expensesCC',
       'assets',
       'liabilities',
     ]),

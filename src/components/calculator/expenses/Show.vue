@@ -23,13 +23,13 @@ export default {
       type: Number,
       default: 0,
     },
-    type: {
-      type: String,
-      default: '',
-    },
     removable: {
       type: Boolean,
       default: true,
+    },
+    dataKey: {
+      type: String,
+      default: 'expensesBank',
     },
   },
   methods: {
@@ -37,7 +37,7 @@ export default {
       this.$store.commit({
         type: 'removeEntry',
         index: this.$vnode.key,
-        entryType: 'expenses',
+        entryType: this.dataKey,
       });
     },
   },

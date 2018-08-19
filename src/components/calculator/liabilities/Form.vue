@@ -39,21 +39,27 @@
 <script>
 export default {
   name: 'LiabilityForm',
-  data: () => ({
-    form: {
-      name: '',
-      value: 0,
-      monthlyObligationType: 0,
-      monthlyObligationValue: 0,
-    },
-  }),
+  data() {
+    return {
+      form: this.defaults(),
+    };
+  },
   methods: {
+    defaults() {
+      return {
+        name: '',
+        value: 0,
+        monthlyObligationType: 0,
+        monthlyObligationValue: 0,
+      };
+    },
     submit() {
       this.$store.commit({
         type: 'addEntry',
         entry: this.form,
         entryType: 'liabilities',
       });
+      this.form = this.defaults();
     },
   },
 };

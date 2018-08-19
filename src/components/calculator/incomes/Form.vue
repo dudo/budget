@@ -18,19 +18,25 @@
 <script>
 export default {
   name: 'IncomeForm',
-  data: () => ({
-    form: {
-      name: '',
-      value: 0,
-    },
-  }),
+  data() {
+    return {
+      form: this.defaults(),
+    };
+  },
   methods: {
+    defaults() {
+      return {
+        name: '',
+        value: 0,
+      };
+    },
     submit() {
       this.$store.commit({
         type: 'addEntry',
         entry: this.form,
         entryType: 'incomes',
       });
+      this.form = this.defaults();
     },
   },
 };

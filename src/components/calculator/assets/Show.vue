@@ -11,7 +11,6 @@
       <span>monthly revenue</span>
       <span>{{ monthlyRevenueValue }}</span>
     </div>
-
   </div>
 </template>
 

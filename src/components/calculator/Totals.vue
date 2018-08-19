@@ -56,35 +56,27 @@ export default {
     },
   },
   computed: {
-    totals() {
-      return {
-        income: this.incomes
-          .reduce((acc, x) => acc + x.value, 0) + this.assetRevenue,
-        expensesBank: this.expenses
-          .filter(x => x.type === 'bank')
-          .reduce((acc, x) => acc - x.value, 0) + this.liabilityObligations,
-        expensesCc: this.expenses
-          .filter(x => x.type === 'cc')
-          .reduce((acc, x) => acc - x.value, 0),
-        assets: this.assets
-          .reduce((acc, x) => acc + x.value, 0),
-        liabilities: this.liabilities
-          .reduce((acc, x) => acc - x.value, 0),
-      };
+    incomeTotal() {
+      return this.incomes.reduce((acc, x) => acc + x.value, 0) + this.assetRevenue;
+    },
+    expensesBankTotal() {
+      return this.expensesBank.reduce((acc, x) => acc + x.value, 0) + this.liabilityObligations;
+    },
+    liabilitiesTotal() {
+      return this.liabilities.reduce((acc, x) => acc + x.value, 0);
     },
     cashFlow() {
-      return this.totals.income - this.totals.expensesBank;
+      return this.incomeTotal - this.expensesBankTotal;
     },
     dscr() {
-      return this.totals.income / this.totals.expensesBank;
+      return this.incomeTotal / this.expensesBankTotal;
     },
     monthsOfDebtRemaining() {
-      return this.totals.liabilities / (this.liabilityObligations - this.creditCardObligations);
+      return this.liabilitiesTotal / (this.liabilityObligations - this.creditCardObligations);
     },
     ...mapState([
       'incomes',
-      'expenses',
-      'assets',
+      'expensesBank',
       'liabilities',
     ]),
   },
