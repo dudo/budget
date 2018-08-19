@@ -11,53 +11,24 @@
         v-for="section in balanceSheet"
         v-bind="section"
         :key="section.dataKey" />
-      <section>
-        <h3>Totals</h3>
-        <div class="group">
-          <div class="entry total">
-            <div>
-              <span>cashflow</span>
-              <span>
-                {{
-                  cashFlow.toLocaleString('en', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0
-                  })
-                }}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="group">
-          <div class="entry total">
-            <div>
-              <span>dscr</span>
-              <span>{{ dscr.toPrecision(3) }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="group">
-          <div class="entry total">
-            <div>
-              <span>months of debt remaining</span>
-              <span>{{ Math.round(monthsOfDebtRemaining) }}</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Totals
+        :liability-obligations="liabilityObligations"
+        :asset-revenue="assetRevenue"
+        :credit-card-obligations="creditCardObligations" />
     </div>
   </div>
 </template>
 
 <script>
 import Section from '@/components/calculator/Section.vue';
+import Totals from '@/components/calculator/Totals.vue';
 import { mapState } from 'vuex';
 
 export default {
   name: 'Calculator',
   components: {
     Section,
+    Totals,
   },
   methods: {
 
@@ -71,12 +42,14 @@ export default {
         name: 'Liability Obligations',
         value: Math.min(this.liabilityObligations, this.creditCardObligations),
         type: 'bank',
+        removable: false,
       };
     },
     assetIncome() {
       return {
         name: 'Revenue from Assets',
         value: this.assetRevenue,
+        removable: false,
       };
     },
     assetRevenue() {
@@ -111,37 +84,12 @@ export default {
         }
       });
       return values
-        .reduce((a, b) => a + b, 0);
+        .reduce((a, b) => a - b, 0);
     },
     creditCardObligations() {
       return this.expenses
         .filter(x => x.type === 'cc')
-        .reduce((acc, x) => acc + x.value, 0);
-    },
-    totals() {
-      return {
-        income: this.incomes
-          .reduce((acc, x) => acc + x.value, 0) + this.assetRevenue,
-        expensesBank: this.expenses
-          .filter(x => x.type === 'bank')
-          .reduce((acc, x) => acc + x.value, 0) + this.liabilityObligations,
-        expensesCc: this.expenses
-          .filter(x => x.type === 'cc')
-          .reduce((acc, x) => acc + x.value, 0),
-        assets: this.assets
-          .reduce((acc, x) => acc + x.value, 0),
-        liabilities: this.liabilities
-          .reduce((acc, x) => acc + x.value, 0),
-      };
-    },
-    cashFlow() {
-      return this.totals.income + this.totals.expensesBank;
-    },
-    dscr() {
-      return this.totals.income / -this.totals.expensesBank;
-    },
-    monthsOfDebtRemaining() {
-      return this.totals.liabilities / (this.liabilityObligations - this.creditCardObligations);
+        .reduce((acc, x) => acc - x.value, 0);
     },
     incomeStatement() {
       return [
@@ -153,14 +101,14 @@ export default {
         },
         {
           title: 'Bank Expenses',
-          dataKey: 'expensesBank',
+          dataKey: 'expenses-bank',
           entries: this.expenses
             .filter(x => x.type === 'bank')
             .concat([this.liabilityExpense]),
         },
         {
           title: 'Credit Card Expenses',
-          dataKey: 'expensesCc',
+          dataKey: 'expenses-cc',
           entries: this.expenses
             .filter(x => x.type === 'cc'),
         },

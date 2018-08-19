@@ -3,25 +3,11 @@
     <div class="entry expense">
       <span>{{ name }}</span>
       <span>{{ value.toLocaleString('en', { style: 'currency', currency: 'USD' }) }}</span>
+      <button
+        v-if="removable"
+        type="button"
+        @click="remove">remove</button>
     </div>
-    <form action="">
-      <label for="expense-name">Expense Name</label>
-      <input
-        type="text"
-        id="expense-name"
-        v-model.trim="name">
-
-      <label for="expense-value">Value</label>
-      <input
-        type="number"
-        id="expense-value"
-        v-model.number="value">
-
-      <input
-        type="hidden"
-        id="expense-type"
-        v-model="type">
-    </form>
   </div>
 </template>
 
@@ -40,6 +26,19 @@ export default {
     type: {
       type: String,
       default: '',
+    },
+    removable: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  methods: {
+    remove() {
+      this.$store.commit({
+        type: 'removeEntry',
+        index: this.$vnode.key,
+        entryType: 'expenses',
+      });
     },
   },
 };

@@ -21,14 +21,27 @@
       v-for="(entry, index) in entries"
       v-bind="entry"
       :key="index" />
+    <IncomeForm
+      v-if="dataKey === 'incomes'" />
+    <ExpenseForm
+      v-if="dataKey.startsWith('expenses')"
+      :expense-type="dataKey.split('-')[dataKey.split('-').length - 1]" />
+    <AssetForm
+      v-if="dataKey === 'assets'" />
+    <LiabilityForm
+      v-if="dataKey === 'liabilities'" />
   </section>
 </template>
 
 <script>
-import Income from '@/components/calculator/entries/Income.vue';
-import Expense from '@/components/calculator/entries/Expense.vue';
-import Asset from '@/components/calculator/entries/Asset.vue';
-import Liability from '@/components/calculator/entries/Liability.vue';
+import Income from '@/components/calculator/incomes/Show.vue';
+import IncomeForm from '@/components/calculator/incomes/Form.vue';
+import Expense from '@/components/calculator/expenses/Show.vue';
+import ExpenseForm from '@/components/calculator/expenses/Form.vue';
+import Asset from '@/components/calculator/assets/Show.vue';
+import AssetForm from '@/components/calculator/assets/Form.vue';
+import Liability from '@/components/calculator/liabilities/Show.vue';
+import LiabilityForm from '@/components/calculator/liabilities/Form.vue';
 
 export default {
   name: 'Section',
@@ -51,6 +64,10 @@ export default {
     Expense,
     Asset,
     Liability,
+    IncomeForm,
+    ExpenseForm,
+    AssetForm,
+    LiabilityForm,
   },
 };
 </script>
