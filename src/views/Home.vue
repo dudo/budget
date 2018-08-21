@@ -54,11 +54,11 @@
 
         <h3>Poor (or a young person still at home)</h3>
         <p>Income -> Expenses</p>
-        
+
         <h3>Middle</h3>
         <p>Income -> Expenses</p>
         <p>Liabilities</p>
-        
+
         <h3>Wealthy</h3>
         <p>Assets -> Income</p>
       </div>

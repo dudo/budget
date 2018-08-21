@@ -1,13 +1,13 @@
 <template>
-  <div class="group">
-    <div class="entry liability">
+  <tr>
+    <div>
       <span>{{ name }}</span>
       <span>{{ value.toLocaleString('en-us', { style: 'currency', currency: 'USD' }) }}</span>
-      <button
-        type="button"
-        @click="remove">remove</button>
+      <a
+        class="delete"
+        @click="remove" />
     </div>
-    <div class="entry obligation">
+    <div>
       <span>monthly obligation</span>
       <span v-if="monthlyObligationType === balanceSheetEnum.dollars">
         {{
@@ -26,7 +26,7 @@
         }}
       </span>
     </div>
-  </div>
+  </tr>
 </template>
 
 <script>

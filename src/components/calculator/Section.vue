@@ -1,38 +1,44 @@
 <template>
   <section>
     <h3>{{ title }}</h3>
-    <Income
-      v-if="dataKey === 'incomes'"
-      v-for="(entry, index) in entries"
-      v-bind="entry"
-      :key="index" />
-    <Expense
-      v-if="dataKey.startsWith('expenses')"
-      v-for="(entry, index) in entries"
-      v-bind="entry"
-      :data-key="dataKey"
-      :key="index" />
-    <Asset
-      v-if="dataKey === 'assets'"
-      v-for="(entry, index) in entries"
-      v-bind="entry"
-      :balance-sheet-enum="balanceSheetEnum"
-      :key="index" />
-    <Liability
-      v-if="dataKey === 'liabilities'"
-      v-for="(entry, index) in entries"
-      v-bind="entry"
-      :balance-sheet-enum="balanceSheetEnum"
-      :key="index" />
-    <IncomeForm
-      v-if="dataKey === 'incomes'" />
-    <ExpenseForm
-      v-if="dataKey.startsWith('expenses')"
-      :data-key="dataKey" />
-    <AssetForm
-      v-if="dataKey === 'assets'" />
-    <LiabilityForm
-      v-if="dataKey === 'liabilities'" />
+    <table class="table is-striped">
+      <tbody>
+        <Income
+          v-if="dataKey === 'incomes'"
+          v-for="(entry, index) in entries"
+          v-bind="entry"
+          :key="index" />
+        <Expense
+          v-if="dataKey.startsWith('expenses')"
+          v-for="(entry, index) in entries"
+          v-bind="entry"
+          :data-key="dataKey"
+          :key="index" />
+        <Asset
+          v-if="dataKey === 'assets'"
+          v-for="(entry, index) in entries"
+          v-bind="entry"
+          :balance-sheet-enum="balanceSheetEnum"
+          :key="index" />
+        <Liability
+          v-if="dataKey === 'liabilities'"
+          v-for="(entry, index) in entries"
+          v-bind="entry"
+          :balance-sheet-enum="balanceSheetEnum"
+          :key="index" />
+      </tbody>
+      <tfoot>
+        <IncomeForm
+          v-if="dataKey === 'incomes'" />
+        <ExpenseForm
+          v-if="dataKey.startsWith('expenses')"
+          :data-key="dataKey" />
+        <AssetForm
+          v-if="dataKey === 'assets'" />
+        <LiabilityForm
+          v-if="dataKey === 'liabilities'" />
+      </tfoot>
+    </table>
   </section>
 </template>
 

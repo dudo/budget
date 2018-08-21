@@ -1,14 +1,14 @@
 <template>
-  <div class="group">
-    <div class="entry income">
+  <tr>
+    <div>
       <span>{{ name }}</span>
       <span>{{ value.toLocaleString('en', { style: 'currency', currency: 'USD' }) }}</span>
-      <button
+      <a
         v-if="removable"
-        type="button"
-        @click="remove">remove</button>
+        class="delete"
+        @click="remove" />
     </div>
-  </div>
+  </tr>
 </template>
 
 <script>

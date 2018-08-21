@@ -1,40 +1,44 @@
 <template>
   <section>
     <h3>Totals</h3>
-    <div class="group">
-      <div class="entry total">
-        <div>
-          <span>cashflow</span>
-          <span>
-            {{
-              cashFlow.toLocaleString('en', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0
-              })
-            }}
-          </span>
-        </div>
-      </div>
-    </div>
-    <div class="group">
-      <div class="entry total">
-        <div>
-          <span>dscr</span>
-          <span>{{ dscr.toPrecision(3) }}</span>
-        </div>
-      </div>
-    </div>
-    <div class="group">
-      <div class="entry total">
-        <div>
-          <span>months of debt remaining</span>
-          <span v-if="monthsOfDebtRemaining < 0">∞</span>
-          <span v-else-if="cashFlow < 0">∞</span>
-          <span v-else>{{ Math.round(monthsOfDebtRemaining) }}</span>
-        </div>
-      </div>
-    </div>
+    <table class="table is-striped">
+      <tbody>
+        <tr>
+          <div>
+            <div>
+              <span>cashflow</span>
+              <span>
+                {{
+                  cashFlow.toLocaleString('en', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0
+                  })
+                }}
+              </span>
+            </div>
+          </div>
+        </tr>
+        <tr>
+          <div>
+            <div>
+              <span>dscr</span>
+              <span>{{ dscr.toPrecision(3) }}</span>
+            </div>
+          </div>
+        </tr>
+        <tr>
+          <div>
+            <div>
+              <span>months of debt remaining</span>
+              <span v-if="monthsOfDebtRemaining < 0">∞</span>
+              <span v-else-if="cashFlow < 0">∞</span>
+              <span v-else>{{ Math.round(monthsOfDebtRemaining) }}</span>
+            </div>
+          </div>
+        </tr>
+      </tbody>
+    </table>
   </section>
 </template>
 
