@@ -4,12 +4,14 @@
       <Section
         v-for="section in incomeStatement"
         v-bind="section"
+        :balance-sheet-enum="balanceSheetEnum()"
         :key="section.dataKey" />
     </div>
     <div class='column'>
       <Section
         v-for="section in balanceSheet"
         v-bind="section"
+        :balance-sheet-enum="balanceSheetEnum()"
         :key="section.dataKey" />
       <Totals
         :liability-obligations="liabilityObligations"
@@ -31,16 +33,15 @@ export default {
     Totals,
   },
   methods: {
-
-  },
-  computed: {
     balanceSheetEnum() {
       return Object.freeze({ dollars: 0, percent: 1 });
     },
+  },
+  computed: {
     liabilityExpense() {
       return {
         name: 'Liability Obligations',
-        value: Math.max(this.liabilityObligations, this.creditCardObligations),
+        value: this.liabilityObligations,
         removable: false,
       };
     },
@@ -55,10 +56,10 @@ export default {
       const values = [];
       this.assets.forEach((x) => {
         switch (x.monthlyRevenueType) {
-          case this.balanceSheetEnum.dollars:
+          case this.balanceSheetEnum().dollars:
             values.push(x.monthlyRevenueValue);
             break;
-          case this.balanceSheetEnum.percent:
+          case this.balanceSheetEnum().percent:
             values.push(x.monthlyRevenueValue * x.value);
             break;
           default:
@@ -72,18 +73,17 @@ export default {
       const values = [];
       this.liabilities.forEach((x) => {
         switch (x.monthlyObligationType) {
-          case this.balanceSheetEnum.dollars:
+          case this.balanceSheetEnum().dollars:
             values.push(x.monthlyObligationValue);
             break;
-          case this.balanceSheetEnum.percent:
+          case this.balanceSheetEnum().percent:
             values.push(x.monthlyObligationValue * x.value);
             break;
           default:
             values.push(0);
         }
       });
-      return values
-        .reduce((a, b) => a + b, 0);
+      return Math.max(values.reduce((a, b) => a + b, 0), this.creditCardObligations);
     },
     creditCardObligations() {
       return this.expensesCC

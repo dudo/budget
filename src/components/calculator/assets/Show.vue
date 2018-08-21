@@ -2,14 +2,29 @@
   <div class="group">
     <div class="entry asset">
       <span>{{ name }}</span>
-      <span>{{ value.toLocaleString('en', { style: 'currency', currency: 'USD' }) }}</span>
+      <span>{{ value.toLocaleString('en-us', { style: 'currency', currency: 'USD' }) }}</span>
       <button
         type="button"
         @click="remove">remove</button>
     </div>
     <div class="entry revenue">
       <span>monthly revenue</span>
-      <span>{{ monthlyRevenueValue }}</span>
+      <span v-if="monthlyRevenueType === balanceSheetEnum.dollars">
+        {{
+          monthlyRevenueValue.toLocaleString(
+            'en-us',
+            { style: 'currency', currency: 'USD' }
+          )
+        }}
+      </span>
+      <span v-if="monthlyRevenueType === balanceSheetEnum.percent">
+        {{
+          monthlyRevenueValue.toLocaleString(
+            'en-us',
+            { style: 'percent', maximumSignificantDigits: 3 }
+          )
+        }}
+      </span>
     </div>
   </div>
 </template>
@@ -33,6 +48,10 @@ export default {
     monthlyRevenueValue: {
       type: Number,
       default: 0,
+    },
+    balanceSheetEnum: {
+      type: Object,
+      default: () => {},
     },
   },
   methods: {

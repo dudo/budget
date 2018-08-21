@@ -16,11 +16,13 @@
       v-if="dataKey === 'assets'"
       v-for="(entry, index) in entries"
       v-bind="entry"
+      :balance-sheet-enum="balanceSheetEnum"
       :key="index" />
     <Liability
       v-if="dataKey === 'liabilities'"
       v-for="(entry, index) in entries"
       v-bind="entry"
+      :balance-sheet-enum="balanceSheetEnum"
       :key="index" />
     <IncomeForm
       v-if="dataKey === 'incomes'" />
@@ -55,6 +57,10 @@ export default {
       type: String,
       default: '',
     },
+    balanceSheetEnum: {
+      type: Object,
+      default: () => {},
+    },
     entries: {
       type: Array,
       default: () => [],
@@ -85,6 +91,23 @@ export default {
   width: 100px;
   display: inline-block;
   padding-left: 10px;
+}
+
+.swipe-view {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-coordinate: 0 0;
+  scroll-snap-points-x: repeat(100%);
+  scroll-snap-type: mandatory;
+  flex: 1;
+  display:flex;
+  -webkit-overflow-scrolling: touch;
+}
+.swipe-view section {
+  width: 380px;
+  height: 100%;
+  flex:0 0 380px;
+  scroll-snap-align: start;
 }
 
 </style>
