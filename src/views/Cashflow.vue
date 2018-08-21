@@ -1,8 +1,19 @@
 <template>
-  <div class="cashflow">
-    <h1>Calculator</h1>
+  <section>
+    <div class="hero">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            Calculator
+          </h1>
+          <h2 class="subtitle">
+            Numbers!
+          </h2>
+        </div>
+      </div>
+    </div>
     <Calculator/>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -16,8 +27,3 @@ export default {
   },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-
-</style>

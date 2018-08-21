@@ -1,5 +1,5 @@
 <template>
-  <div class='calculator wrapper'>
+  <div class='columns'>
     <div class='column'>
       <Section
         v-for="section in incomeStatement"
@@ -136,19 +136,5 @@ export default {
 </script>
 
 <style scoped>
-@media (min-width: 1000px) {
-  .wrapper {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 
-h2, h3 {
-  text-align: center;
-}
-
-.column {
-  width: 50%;
-  margin: 10px auto;
-  float: left;
-}
 </style>
