@@ -1,40 +1,34 @@
 <template>
   <section>
     <h3>Totals</h3>
-    <table class="table is-striped">
+    <table class="table is-striped is-fullwidth">
       <tbody>
         <tr>
           <div>
-            <div>
-              <span>cashflow</span>
-              <span>
-                {{
-                  cashFlow.toLocaleString('en', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0
-                  })
-                }}
-              </span>
-            </div>
+            <span>cashflow</span>
+            <span>
+              {{
+                cashFlow.toLocaleString('en', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 0
+                })
+              }}
+            </span>
           </div>
         </tr>
         <tr>
           <div>
-            <div>
-              <span>dscr</span>
-              <span>{{ dscr.toPrecision(3) }}</span>
-            </div>
+            <span>dscr</span>
+            <span>{{ dscr.toPrecision(3) }}</span>
           </div>
         </tr>
         <tr>
           <div>
-            <div>
-              <span>months of debt remaining</span>
-              <span v-if="monthsOfDebtRemaining < 0">∞</span>
-              <span v-else-if="cashFlow < 0">∞</span>
-              <span v-else>{{ Math.round(monthsOfDebtRemaining) }}</span>
-            </div>
+            <span>months of debt remaining</span>
+            <span v-if="monthsOfDebtRemaining < 0">∞</span>
+            <span v-else-if="cashFlow < 0">∞</span>
+            <span v-else>{{ Math.round(monthsOfDebtRemaining) }}</span>
           </div>
         </tr>
       </tbody>

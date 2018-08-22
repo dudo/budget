@@ -1,7 +1,7 @@
 <template>
   <section>
     <h3>{{ title }}</h3>
-    <table class="table is-striped">
+    <table class="table is-striped is-fullwidth">
       <tbody>
         <Income
           v-if="dataKey === 'incomes'"

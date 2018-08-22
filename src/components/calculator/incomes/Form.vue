@@ -1,17 +1,53 @@
 <template>
-  <form action="">
-    <label for="income-name">Income Name</label>
-    <input
-      type="text"
-      id="income-name"
-      v-model.trim="form.name">
+  <form>
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label
+          class="label"
+          for="income-name">Income</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <input
+              placeholder="Name"
+              class="input"
+              type="text"
+              id="income-name"
+              v-model.trim="form.name">
+          </div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <input
+              placeholder="Value"
+              class="input"
+              type="number"
+              id="income-value"
+              v-model.number="form.value"
+              @keyup.enter="submit">
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <label for="income-value">Value</label>
-    <input
-      type="number"
-      id="income-value"
-      v-model.number="form.value"
-      @keyup.enter="submit">
+    <div class="field is-horizontal">
+      <div class="field-label" />
+      <div class="field-body">
+        <div class="field is-grouped">
+          <p class="control">
+            <a class="button is-primary">
+              Submit
+            </a>
+          </p>
+          <p class="control">
+            <a class="button is-light">
+              Cancel
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
   </form>
 </template>
 
@@ -27,7 +63,7 @@ export default {
     defaults() {
       return {
         name: '',
-        value: 0,
+        value: '',
       };
     },
     submit() {
