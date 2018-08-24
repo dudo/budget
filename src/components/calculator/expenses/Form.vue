@@ -1,53 +1,28 @@
 <template>
-   <form>
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label
-          class="label"
-          for="expense-name">Expense</label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <input
-              placeholder="Name"
-              class="input"
-              type="text"
-              id="expense-name"
-              v-model.trim="form.name">
-          </div>
+  <form>
+    <tr>
+      <td>
+        <div class="control">
+          <input
+            placeholder="Name"
+            class="input"
+            type="text"
+            id="expense-name"
+            v-model.trim="form.name">
         </div>
-        <div class="field">
-          <div class="control">
-            <input
-              placeholder="Value"
-              class="input"
-              type="number"
-              id="expense-value"
-              v-model.number="form.value"
-              @keyup.enter="submit">
-          </div>
+      </td>
+      <td>
+        <div class="control">
+          <input
+            placeholder="Value"
+            class="input"
+            type="number"
+            id="expense-value"
+            v-model.number="form.value"
+            @keyup.enter="submit">
         </div>
-      </div>
-    </div>
-
-    <div class="field is-horizontal">
-      <div class="field-label" />
-      <div class="field-body">
-        <div class="field is-grouped">
-          <p class="control">
-            <a class="button is-primary">
-              Submit
-            </a>
-          </p>
-          <p class="control">
-            <a class="button is-light">
-              Cancel
-            </a>
-          </p>
-        </div>
-      </div>
-    </div>
+      </td>
+    </tr>
   </form>
 </template>
 
@@ -83,3 +58,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+form {
+  display: contents
+}
+</style>

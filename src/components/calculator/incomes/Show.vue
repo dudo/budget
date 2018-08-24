@@ -1,13 +1,13 @@
 <template>
   <tr>
-    <div>
-      <span>{{ name }}</span>
-      <span>{{ value.toLocaleString('en', { style: 'currency', currency: 'USD' }) }}</span>
+    <td>
+      {{ name }}
       <a
         v-if="removable"
         class="delete"
         @click="remove" />
-    </div>
+    </td>
+    <td>{{ value.toLocaleString('en', { style: 'currency', currency: 'USD' }) }}</td>
   </tr>
 </template>
 

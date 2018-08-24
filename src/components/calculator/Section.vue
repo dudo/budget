@@ -1,7 +1,12 @@
 <template>
   <section>
-    <h3>{{ title }}</h3>
     <table class="table is-striped is-fullwidth">
+      <thead>
+        <th>{{ title }}</th>
+        <th>Value</th>
+        <th v-if="dataKey === 'assets'">Revenue</th>
+        <th v-else-if="dataKey === 'liabilities'">Obligation</th>
+      </thead>
       <tbody>
         <Income
           v-if="dataKey === 'incomes'"
@@ -26,8 +31,6 @@
           v-bind="entry"
           :balance-sheet-enum="balanceSheetEnum"
           :key="index" />
-      </tbody>
-      <tfoot>
         <IncomeForm
           v-if="dataKey === 'incomes'" />
         <ExpenseForm
@@ -37,7 +40,7 @@
           v-if="dataKey === 'assets'" />
         <LiabilityForm
           v-if="dataKey === 'liabilities'" />
-      </tfoot>
+      </tbody>
     </table>
   </section>
 </template>

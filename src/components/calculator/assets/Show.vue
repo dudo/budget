@@ -1,31 +1,28 @@
 <template>
   <tr>
-    <div>
-      <span>{{ name }}</span>
-      <span>{{ value.toLocaleString('en-us', { style: 'currency', currency: 'USD' }) }}</span>
+    <td>
+      {{ name }}
       <a
         class="delete"
         @click="remove" />
-    </div>
-    <div>
-      <span>monthly revenue</span>
-      <span v-if="monthlyRevenueType === balanceSheetEnum.dollars">
-        {{
-          monthlyRevenueValue.toLocaleString(
-            'en-us',
-            { style: 'currency', currency: 'USD' }
-          )
-        }}
-      </span>
-      <span v-if="monthlyRevenueType === balanceSheetEnum.percent">
-        {{
-          monthlyRevenueValue.toLocaleString(
-            'en-us',
-            { style: 'percent', maximumSignificantDigits: 3 }
-          )
-        }}
-      </span>
-    </div>
+    </td>
+    <td>{{ value.toLocaleString('en-us', { style: 'currency', currency: 'USD' }) }}</td>
+    <td v-if="monthlyRevenueType === balanceSheetEnum.dollars">
+      {{
+        monthlyRevenueValue.toLocaleString(
+          'en-us',
+          { style: 'currency', currency: 'USD' }
+        )
+      }}
+    </td>
+    <td v-if="monthlyRevenueType === balanceSheetEnum.percent">
+      {{
+        monthlyRevenueValue.toLocaleString(
+          'en-us',
+          { style: 'percent', maximumSignificantDigits: 3 }
+        )
+      }}
+    </td>
   </tr>
 </template>
 

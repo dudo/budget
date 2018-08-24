@@ -33,7 +33,7 @@
         </a>
       </div>
     </nav>
-    <router-view />
+    <router-view class="content" />
   </div>
 </template>
 
