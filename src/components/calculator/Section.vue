@@ -87,3 +87,9 @@ export default {
   },
 };
 </script>
+
+<style>
+p.help {
+  height: 18px;
+}
+</style>

@@ -1,34 +1,40 @@
 <template>
   <form>
     <tr>
-      <td class="control">
-        <input
+      <td>
+        <BaseInput
+          :incomplete="incomplete"
           placeholder="Name"
-          class="input"
           type="text"
-          id="income-name"
-          v-model.trim="form.name">
+          :helpText="this.incomplete ? 'Incomplete Income' : ''"
+          v-model.trim="form.name"
+          @keyup.enter="submit" />
       </td>
-      <td class="control">
-        <input
+      <td>
+        <BaseInput
+          :incomplete="incomplete"
           placeholder="Value"
-          class="input"
           type="number"
-          id="income-value"
           v-model.number="form.value"
-          @keyup.enter="submit">
+          @keyup.enter="submit" />
       </td>
     </tr>
   </form>
 </template>
 
 <script>
+import BaseInput from '@/components/shared/BaseInput.vue';
+
 export default {
   name: 'IncomeForm',
   data() {
     return {
       form: this.defaults(),
+      incomplete: false
     };
+  },
+  computed: {
+
   },
   methods: {
     defaults() {
@@ -46,6 +52,9 @@ export default {
       this.form = this.defaults();
     },
   },
+  components: {
+    BaseInput,
+  }
 };
 </script>
 
