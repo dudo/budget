@@ -1,62 +1,52 @@
 <template>
   <form>
     <tr>
-      <td class="control">
-        <input
-          placeholder="Name"
-          class="input"
-          type="text"
-          id="liability-name"
-          v-model.trim="form.name">
+      <td>
+        <BaseInput
+          :incomplete="errors && !form.name"
+          placeholder='Name'
+          type='text'
+          v-model.trim="form.name"
+          @keyup.enter="submit" />
       </td>
-      <td class="control">
-        <input
-          placeholder="Total Value"
-          class="input"
-          type="number"
-          id="liability-value"
+      <td>
+        <BaseInput
+          :incomplete="errors && !form.value"
+          placeholder='Total Value'
+          type='number'
           v-model.number="form.value"
-          @keyup.enter="submit">
+          @keyup.enter="submit" />
       </td>
-      <td class="control">
-        <input
-          placeholder="Monthly Obligation"
-          class="input"
-          type="number"
-          id="liability-monthly-obligation-value"
-          v-model.number="form.monthlyObligationValue">
+      <td>
+        <BaseInput
+          :incomplete="errors && !form.monthlyObligationValue"
+          placeholder='Monthly Obligation'
+          type='text'
+          v-model.trim="form.monthlyObligationValue"
+          @keyup.enter="submit" />
       </td>
-      <!-- <td class="control">
-        TODO idea... parse text to determine type. 5% or $100
-        <label class="radio">
-          <input
-            type="radio"
-            name="liability-monthly-obligation-type"
-            id="liability-monthly-obligation-type-dollars"
-            value="0"
-            v-model.number="form.monthlyObligationType">
-          Dollars
-        </label>
-        <label class="radio">
-          <input
-            type="radio"
-            name="liability-monthly-obligation-type"
-            id="liability-monthly-obligation-type-percent"
-            value="1"
-            v-model.number="form.monthlyObligationType">
-          Percent
-        </label>
-      </td> -->
     </tr>
   </form>
 </template>
 
 <script>
+import BaseInput from '@/components/shared/BaseInput.vue';
+
 export default {
   name: 'LiabilityForm',
+  components: {
+    BaseInput,
+  },
+  props: {
+    balanceSheetEnum: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       form: this.defaults(),
+      errors: false,
     };
   },
   methods: {
@@ -68,13 +58,42 @@ export default {
         monthlyObligationValue: '',
       };
     },
+    inferType() {
+      this.errors = false;
+      let value = Number(this.form.monthlyObligationValue.toString().replace(/[^0-9.-]+/g, ''));
+      if (this.form.monthlyObligationValue.includes('%')) {
+        // 25%
+        this.form.monthlyObligationType = this.balanceSheetEnum.percent;
+        value /= 100.0;
+      } else if (this.form.monthlyObligationValue.includes('$')) {
+        // $250
+        this.form.monthlyObligationType = this.balanceSheetEnum.dollars;
+      } else if (value < 0 && value <= 1) {
+        // 0.25
+        this.form.monthlyObligationType = this.balanceSheetEnum.percent;
+      } else if (value >= 1) {
+        // 250
+        this.form.monthlyObligationType = this.balanceSheetEnum.dollars;
+      } else {
+        this.errors = true;
+        value = '';
+      }
+      this.form.monthlyObligationValue = value;
+    },
     submit() {
-      this.$store.commit({
-        type: 'addEntry',
-        entry: this.form,
-        entryType: 'liabilities',
-      });
-      this.form = this.defaults();
+      this.inferType();
+      const { monthlyObligationType, ...verifiedObject } = this.form;
+      if (Object.values(verifiedObject).some(x => !x)) {
+        this.errors = true;
+      } else {
+        this.errors = false;
+        this.$store.commit({
+          type: 'addEntry',
+          entry: this.form,
+          entryType: 'liabilities',
+        });
+        this.form = this.defaults();
+      }
     },
   },
 };

@@ -1,62 +1,52 @@
 <template>
   <form>
     <tr>
-      <td class="control">
-        <input
-          placeholder="Name"
-          class="input"
-          type="text"
-          id="asset-name"
-          v-model.trim="form.name">
+      <td>
+        <BaseInput
+          :incomplete="errors && !form.name"
+          placeholder='Name'
+          type='text'
+          v-model.trim="form.name"
+          @keyup.enter="submit" />
       </td>
-      <td class="control">
-        <input
-          placeholder="Total Value"
-          class="input"
-          type="number"
-          id="asset-value"
+      <td>
+        <BaseInput
+          :incomplete="errors && !form.value"
+          placeholder='Total Value'
+          type='number'
           v-model.number="form.value"
-          @keyup.enter="submit">
+          @keyup.enter="submit" />
       </td>
-      <td class="control">
-        <input
-          placeholder="Monthly Revenue"
-          class="input"
-          type="number"
-          id="asset-monthly-revenue-value"
-          v-model.number="form.monthlyRevenueValue">
+      <td>
+        <BaseInput
+          :incomplete="errors && !form.monthlyRevenueValue"
+          placeholder='Monthly Revenue'
+          type='text'
+          v-model.trim="form.monthlyRevenueValue"
+          @keyup.enter="submit" />
       </td>
-      <!-- <td class="control">
-        TODO idea... parse text to determine type. 5% or $100
-        <label class="radio">
-          <input
-            type="radio"
-            name="asset-monthly-revenue-type"
-            id="asset-monthly-revenue-type-dollars"
-            value="0"
-            v-model.number="form.monthlyRevenueType">
-          Dollars
-        </label>
-        <label class="radio">
-          <input
-            type="radio"
-            name="asset-monthly-revenue-type"
-            id="asset-monthly-revenue-type-percent"
-            value="1"
-            v-model.number="form.monthlyRevenueType">
-          Percent
-        </label>
-      </td> -->
     </tr>
   </form>
 </template>
 
 <script>
+import BaseInput from '@/components/shared/BaseInput.vue';
+
 export default {
   name: 'AssetForm',
+  components: {
+    BaseInput,
+  },
+  props: {
+    balanceSheetEnum: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       form: this.defaults(),
+      errors: false,
     };
   },
   methods: {
@@ -68,13 +58,42 @@ export default {
         monthlyRevenueValue: '',
       };
     },
+    inferType() {
+      this.errors = false;
+      let value = Number(this.form.monthlyRevenueValue.toString().replace(/[^0-9.-]+/g, ''));
+      if (this.form.monthlyRevenueValue.includes('%')) {
+        // 25%
+        this.form.monthlyRevenueType = this.balanceSheetEnum.percent;
+        value /= 100.0;
+      } else if (this.form.monthlyRevenueValue.includes('$')) {
+        // $250
+        this.form.monthlyRevenueType = this.balanceSheetEnum.dollars;
+      } else if (value < 0 && value <= 1) {
+        // 0.25
+        this.form.monthlyRevenueType = this.balanceSheetEnum.percent;
+      } else if (value >= 1) {
+        // 250
+        this.form.monthlyRevenueType = this.balanceSheetEnum.dollars;
+      } else {
+        this.errors = true;
+        value = '';
+      }
+      this.form.monthlyRevenueValue = value;
+    },
     submit() {
-      this.$store.commit({
-        type: 'addEntry',
-        entry: this.form,
-        entryType: 'assets',
-      });
-      this.form = this.defaults();
+      this.inferType();
+      const { monthlyRevenueType, ...verifiedObject } = this.form;
+      if (Object.values(verifiedObject).some(x => !x)) {
+        this.errors = true;
+      } else {
+        this.errors = false;
+        this.$store.commit({
+          type: 'addEntry',
+          entry: this.form,
+          entryType: 'assets',
+        });
+        this.form = this.defaults();
+      }
     },
   },
 };

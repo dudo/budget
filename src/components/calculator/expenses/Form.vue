@@ -2,33 +2,33 @@
   <form>
     <tr>
       <td>
-        <div class="control">
-          <input
-            placeholder="Name"
-            class="input"
-            type="text"
-            id="expense-name"
-            v-model.trim="form.name">
-        </div>
+        <BaseInput
+          :incomplete="errors && !form.name"
+          placeholder='Name'
+          type='text'
+          v-model.trim="form.name"
+          @keyup.enter="submit" />
       </td>
       <td>
-        <div class="control">
-          <input
-            placeholder="Value"
-            class="input"
-            type="number"
-            id="expense-value"
-            v-model.number="form.value"
-            @keyup.enter="submit">
-        </div>
+        <BaseInput
+          :incomplete="errors && !form.value"
+          placeholder='Value'
+          type='number'
+          v-model.number="form.value"
+          @keyup.enter="submit" />
       </td>
     </tr>
   </form>
 </template>
 
 <script>
+import BaseInput from '@/components/shared/BaseInput.vue';
+
 export default {
   name: 'ExpenseForm',
+  components: {
+    BaseInput,
+  },
   props: {
     dataKey: {
       type: String,
@@ -38,6 +38,7 @@ export default {
   data() {
     return {
       form: this.defaults(),
+      errors: false,
     };
   },
   methods: {
@@ -48,12 +49,17 @@ export default {
       };
     },
     submit() {
-      this.$store.commit({
-        type: 'addEntry',
-        entry: this.form,
-        entryType: this.dataKey,
-      });
-      this.form = this.defaults();
+      if (Object.values(this.form).some(x => !x)) {
+        this.errors = true;
+      } else {
+        this.errors = false;
+        this.$store.commit({
+          type: 'addEntry',
+          entry: this.form,
+          entryType: this.dataKey,
+        });
+        this.form = this.defaults();
+      }
     },
   },
 };

@@ -3,18 +3,17 @@
     <tr>
       <td>
         <BaseInput
-          :incomplete="incomplete"
-          placeholder="Name"
-          type="text"
-          :helpText="this.incomplete ? 'Incomplete Income' : ''"
+          :incomplete="errors && !form.name"
+          placeholder='Name'
+          type='text'
           v-model.trim="form.name"
           @keyup.enter="submit" />
       </td>
       <td>
         <BaseInput
-          :incomplete="incomplete"
-          placeholder="Value"
-          type="number"
+          :incomplete="errors && !form.value"
+          placeholder='Value'
+          type='number'
           v-model.number="form.value"
           @keyup.enter="submit" />
       </td>
@@ -27,14 +26,14 @@ import BaseInput from '@/components/shared/BaseInput.vue';
 
 export default {
   name: 'IncomeForm',
+  components: {
+    BaseInput,
+  },
   data() {
     return {
       form: this.defaults(),
-      incomplete: false
+      errors: false,
     };
-  },
-  computed: {
-
   },
   methods: {
     defaults() {
@@ -44,17 +43,19 @@ export default {
       };
     },
     submit() {
-      this.$store.commit({
-        type: 'addEntry',
-        entry: this.form,
-        entryType: 'incomes',
-      });
-      this.form = this.defaults();
+      if (Object.values(this.form).some(x => !x)) {
+        this.errors = true;
+      } else {
+        this.errors = false;
+        this.$store.commit({
+          type: 'addEntry',
+          entry: this.form,
+          entryType: 'incomes',
+        });
+        this.form = this.defaults();
+      }
     },
   },
-  components: {
-    BaseInput,
-  }
 };
 </script>
 

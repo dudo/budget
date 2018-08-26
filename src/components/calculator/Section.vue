@@ -37,9 +37,11 @@
           v-if="dataKey.startsWith('expenses')"
           :data-key="dataKey" />
         <AssetForm
-          v-if="dataKey === 'assets'" />
+          v-if="dataKey === 'assets'"
+          :balance-sheet-enum="balanceSheetEnum" />
         <LiabilityForm
-          v-if="dataKey === 'liabilities'" />
+          v-if="dataKey === 'liabilities'"
+          :balance-sheet-enum="balanceSheetEnum" />
       </tbody>
     </table>
   </section>
