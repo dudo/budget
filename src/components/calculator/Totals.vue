@@ -7,7 +7,7 @@
       </thead>
       <tbody>
         <tr>
-          <td>cashflow</td>
+          <td>Cashflow</td>
           <td>
             {{
               cashFlow.toLocaleString('en', {
@@ -19,11 +19,25 @@
           </td>
         </tr>
         <tr>
-          <td>dscr</td>
-          <td>{{ dscr.toPrecision(3) }}</td>
+          <td>Debt to Income Ratio</td>
+          <td>
+            {{
+              debtToIncomeRatio.toLocaleString(
+                'en-us',
+                { style: 'percent', maximumSignificantDigits: 3 }
+              )
+            }}
+            ({{
+              minimumLiabilityPercent.toLocaleString(
+                'en-us',
+                { style: 'percent', maximumSignificantDigits: 1 }
+              )
+            }}
+            minimum payment)
+          </td>
         </tr>
         <tr>
-          <td>months of debt remaining</td>
+          <td>Months of Debt Remaining</td>
           <td v-if="monthsOfDebtRemaining < 0">∞</td>
           <td v-else-if="cashFlow < 0">∞</td>
           <td v-else>{{ Math.round(monthsOfDebtRemaining) }}</td>
@@ -51,8 +65,25 @@ export default {
       type: Number,
       default: 0,
     },
+    minimumLiabilityPercent: {
+      type: Number,
+      default: 0.0,
+    },
+    minimumMonthlyLiabilityPayment: {
+      type: Number,
+      default: 0,
+    },
+    liabilitiesTotal: {
+      type: Number,
+      default: 0,
+    },
   },
   computed: {
+    ...mapState([
+      'incomes',
+      'expensesBank',
+      'liabilities',
+    ]),
     incomeTotal() {
       return this.incomes.reduce((acc, x) => acc + x.value, 0)
         + this.assetRevenue;
@@ -61,16 +92,16 @@ export default {
       return this.expensesBank.reduce((acc, x) => acc + x.value, 0)
         + this.liabilityObligations;
     },
-    liabilitiesTotal() {
-      return this.liabilities.reduce((acc, x) => acc + x.value, 0);
-    },
     cashFlow() {
       return this.incomeTotal
         - this.expensesBankTotal;
     },
-    dscr() {
-      return this.incomeTotal
-        / this.expensesBankTotal;
+    debtToIncomeRatio() {
+      if (this.incomeTotal === 0) {
+        return 0;
+      }
+      return this.minimumMonthlyLiabilityPayment
+        / this.incomeTotal;
     },
     monthsOfDebtRemaining() {
       const payments = this.liabilityObligations - this.creditCardObligations;
@@ -80,11 +111,6 @@ export default {
       return this.liabilitiesTotal
         / payments;
     },
-    ...mapState([
-      'incomes',
-      'expensesBank',
-      'liabilities',
-    ]),
   },
 };
 </script>

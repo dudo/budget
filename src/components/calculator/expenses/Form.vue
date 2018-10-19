@@ -12,7 +12,7 @@
       <td>
         <BaseInput
           :incomplete="errors && !form.value"
-          placeholder='Value'
+          placeholder='Amount'
           type='number'
           v-model.number="form.value"
           @keyup.enter="submit" />
@@ -23,6 +23,7 @@
 
 <script>
 import BaseInput from '@/components/shared/BaseInput.vue';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'ExpenseForm',
@@ -42,6 +43,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions([
+      'addEntry',
+    ]),
     defaults() {
       return {
         name: '',
@@ -53,8 +57,7 @@ export default {
         this.errors = true;
       } else {
         this.errors = false;
-        this.$store.commit({
-          type: 'addEntry',
+        this.addEntry({
           entry: this.form,
           entryType: this.dataKey,
         });

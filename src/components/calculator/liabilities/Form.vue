@@ -12,7 +12,7 @@
       <td>
         <BaseInput
           :incomplete="errors && !form.value"
-          placeholder='Total Value'
+          placeholder='Amount'
           type='number'
           v-model.number="form.value"
           @keyup.enter="submit" />
@@ -20,7 +20,7 @@
       <td>
         <BaseInput
           :incomplete="errors && !form.monthlyObligationValue"
-          placeholder='Monthly Obligation'
+          placeholder='Typical Monthly Payment'
           type='text'
           v-model.trim="form.monthlyObligationValue"
           @keyup.enter="submit" />
@@ -31,6 +31,7 @@
 
 <script>
 import BaseInput from '@/components/shared/BaseInput.vue';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'LiabilityForm',
@@ -38,9 +39,29 @@ export default {
     BaseInput,
   },
   props: {
+    name: {
+      type: String,
+      default: '',
+    },
+    value: {
+      type: Number,
+      default: 0,
+    },
+    monthlyObligationType: {
+      type: Number,
+      default: 0,
+    },
+    monthlyObligationValue: {
+      type: Number,
+      default: 0,
+    },
     balanceSheetEnum: {
       type: Object,
       default: () => {},
+    },
+    update: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -50,12 +71,16 @@ export default {
     };
   },
   methods: {
+    ...mapActions([
+      'addEntry',
+      'updateEntry',
+    ]),
     defaults() {
       return {
-        name: '',
-        value: '',
-        monthlyObligationType: 0,
-        monthlyObligationValue: '',
+        name: this.name || '',
+        value: this.value || '',
+        monthlyObligationType: this.monthlyObligationType || 0,
+        monthlyObligationValue: this.monthlyObligationValue || '',
       };
     },
     inferType() {
@@ -80,15 +105,22 @@ export default {
       }
       this.form.monthlyObligationValue = value;
     },
-    submit() {
+    submit(e) {
       this.inferType();
       const { monthlyObligationType, ...verifiedObject } = this.form;
       if (Object.values(verifiedObject).some(x => !x)) {
         this.errors = true;
+      } else if (this.update) {
+        this.errors = false;
+        this.updateEntry({
+          entry: this.form,
+          index: this.$vnode.key,
+          entryType: 'liabilities',
+          value: e.target.innerText,
+        });
       } else {
         this.errors = false;
-        this.$store.commit({
-          type: 'addEntry',
+        this.addEntry({
           entry: this.form,
           entryType: 'liabilities',
         });

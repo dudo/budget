@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'Liability',
   props: {
@@ -52,9 +54,11 @@ export default {
     },
   },
   methods: {
+    ...mapActions([
+      'removeEntry',
+    ]),
     remove() {
-      this.$store.commit({
-        type: 'removeEntry',
+      this.removeEntry({
         index: this.$vnode.key,
         entryType: 'liabilities',
       });

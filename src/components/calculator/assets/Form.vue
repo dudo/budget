@@ -12,7 +12,7 @@
       <td>
         <BaseInput
           :incomplete="errors && !form.value"
-          placeholder='Total Value'
+          placeholder='Amount'
           type='number'
           v-model.number="form.value"
           @keyup.enter="submit" />
@@ -20,7 +20,7 @@
       <td>
         <BaseInput
           :incomplete="errors && !form.monthlyRevenueValue"
-          placeholder='Monthly Revenue'
+          placeholder='Typical Monthly Revenue'
           type='text'
           v-model.trim="form.monthlyRevenueValue"
           @keyup.enter="submit" />
@@ -31,6 +31,7 @@
 
 <script>
 import BaseInput from '@/components/shared/BaseInput.vue';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'AssetForm',
@@ -50,6 +51,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions([
+      'addEntry',
+    ]),
     defaults() {
       return {
         name: '',
@@ -87,8 +91,7 @@ export default {
         this.errors = true;
       } else {
         this.errors = false;
-        this.$store.commit({
-          type: 'addEntry',
+        this.addEntry({
           entry: this.form,
           entryType: 'assets',
         });

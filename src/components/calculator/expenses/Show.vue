@@ -1,17 +1,26 @@
 <template>
   <tr>
     <td>
-      {{ name }}
+      <span
+        contenteditable
+        @keydown.enter="update"
+        data-attribute="name">
+        {{ name }}
+      </span>
       <a
         v-if="removable"
         class="delete"
         @click="remove" />
     </td>
-    <td>{{ value.toLocaleString('en', { style: 'currency', currency: 'USD' }) }}</td>
+    <td contenteditable>
+      {{ value.toLocaleString('en', { style: 'currency', currency: 'USD' }) }}
+    </td>
   </tr>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'Expense',
   props: {
@@ -33,11 +42,23 @@ export default {
     },
   },
   methods: {
+    ...mapActions([
+      'removeEntry',
+      'updateEntry',
+    ]),
     remove() {
-      this.$store.commit({
-        type: 'removeEntry',
+      this.removeEntry({
         index: this.$vnode.key,
         entryType: this.dataKey,
+      });
+    },
+    update(e) {
+      e.preventDefault();
+      this.updateEntry({
+        index: this.$vnode.key,
+        entryType: this.dataKey,
+        attribute: e.target.dataset.attribute,
+        value: e.target.innerText,
       });
     },
   },

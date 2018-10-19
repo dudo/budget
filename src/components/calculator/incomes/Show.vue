@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'Income',
   props: {
@@ -29,9 +31,12 @@ export default {
     },
   },
   methods: {
+    ...mapActions([
+      'removeEntry',
+      'updateEntry',
+    ]),
     remove() {
-      this.$store.commit({
-        type: 'removeEntry',
+      this.removeEntry({
         index: this.$vnode.key,
         entryType: 'incomes',
       });

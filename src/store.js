@@ -22,52 +22,25 @@ export default new Vuex.Store({
 
   },
   mutations: {
-    addEntry(state, payload) {
+    ADD_ENTRY(state, payload) {
       state[payload.entryType].push(payload.entry);
     },
-    removeEntry(state, payload) {
+    UPDATE_ENTRY(state, payload) {
+      Vue.set(state[payload.entryType][payload.index], payload.attribute, payload.value);
+    },
+    REMOVE_ENTRY(state, payload) {
       state[payload.entryType].splice(payload.index, 1);
     },
   },
   actions: {
-
+    addEntry({ commit }, payload) {
+      commit('ADD_ENTRY', payload);
+    },
+    updateEntry({ commit }, payload) {
+      commit('UPDATE_ENTRY', payload);
+    },
+    removeEntry({ commit }, payload) {
+      commit('REMOVE_ENTRY', payload);
+    },
   },
 });
-
-
-// import Vue from 'vue'
-// import Vuex from 'vuex'
-
-// Vue.use(Vuex)
-
-// const store = new Vuex.Store({
-//   state: {
-//     user: null,
-//     megaMenuOpen: false
-//   },
-//   getters: {
-//     getUser: state => {
-//       return state.user
-//     },
-//     megaMenuOpen: state => state.megaMenuOpen
-//   },
-//   mutations: {
-//     SET_USER(state, user) {
-//       state.user = user
-//     },
-//     TOGGLE_MENU(state, forceClose) {
-//       if (forceClose) state.megaMenuOpen = false
-//       else state.megaMenuOpen = !state.megaMenuOpen
-//     }
-//   },
-//   actions: {
-//     login({ commit }, user) {
-//       commit('SET_USER', user)
-//     },
-//     toggleMegaMenu({ commit }, forceClose) {
-//       commit('TOGGLE_MENU', forceClose)
-//     }
-//   },
-// })
-
-// export default store

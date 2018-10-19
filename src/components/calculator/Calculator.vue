@@ -16,7 +16,10 @@
       <Totals
         :liability-obligations="liabilityObligations"
         :asset-revenue="assetRevenue"
-        :credit-card-obligations="creditCardObligations" />
+        :credit-card-obligations="creditCardObligations"
+        :minimum-liability-percent="minimumLiabilityPercent()"
+        :minimum-monthly-liability-payment="minimumMonthlyLiabilityPayment"
+        :liabilities-total="liabilitiesTotal" />
     </div>
   </div>
 </template>
@@ -36,8 +39,18 @@ export default {
     balanceSheetEnum() {
       return Object.freeze({ dollars: 0, percent: 1 });
     },
+    minimumLiabilityPercent() {
+      return 0.03;
+    },
   },
   computed: {
+    ...mapState([
+      'incomes',
+      'expensesBank',
+      'expensesCC',
+      'assets',
+      'liabilities',
+    ]),
     liabilityExpense() {
       return {
         name: 'Liability Obligations',
@@ -83,11 +96,22 @@ export default {
             values.push(0);
         }
       });
-      return Math.max(values.reduce((a, b) => a + b, 0), this.creditCardObligations);
+      return Math.max(
+        values.reduce((a, b) => a + b, 0),
+        this.creditCardObligations,
+        this.minimumMonthlyLiabilityPayment,
+      );
     },
     creditCardObligations() {
       return this.expensesCC
         .reduce((acc, x) => acc + x.value, 0);
+    },
+    liabilitiesTotal() {
+      return this.liabilities.reduce((acc, x) => acc + x.value, 0);
+    },
+    minimumMonthlyLiabilityPayment() {
+      return this.liabilitiesTotal
+        * this.minimumLiabilityPercent();
     },
     incomeStatement() {
       return [
@@ -124,13 +148,6 @@ export default {
         },
       ];
     },
-    ...mapState([
-      'incomes',
-      'expensesBank',
-      'expensesCC',
-      'assets',
-      'liabilities',
-    ]),
   },
 };
 </script>
