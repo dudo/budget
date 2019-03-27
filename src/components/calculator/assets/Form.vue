@@ -1,32 +1,32 @@
 <template>
-  <form>
-    <tr>
-      <td>
-        <BaseInput
-          :incomplete="errors && !form.name"
-          placeholder='Name'
-          type='text'
-          v-model.trim="form.name"
-          @keyup.enter="submit" />
-      </td>
-      <td>
-        <BaseInput
-          :incomplete="errors && !form.value"
-          placeholder='Amount'
-          type='number'
-          v-model.number="form.value"
-          @keyup.enter="submit" />
-      </td>
-      <td>
-        <BaseInput
-          :incomplete="errors && !form.monthlyRevenueValue"
-          placeholder='Typical Monthly Revenue'
-          type='text'
-          v-model.trim="form.monthlyRevenueValue"
-          @keyup.enter="submit" />
-      </td>
-    </tr>
-  </form>
+  <tr>
+    <td colspan=3>
+      <form>
+        <div class="field is-horizontal">
+          <div class="field-body">
+            <BaseInput
+              :incomplete="errors && !form.name"
+              placeholder='Name'
+              type='text'
+              v-model.trim="form.name"
+              @keyup.enter="submit" />
+            <BaseInput
+              :incomplete="errors && !form.value"
+              placeholder='Amount'
+              type='number'
+              v-model.number="form.value"
+              @keyup.enter="submit" />
+            <BaseInput
+              :incomplete="errors && !form.monthlyRevenueValue"
+              placeholder='Monthly Revenue'
+              type='text'
+              v-model.trim="form.monthlyRevenueValue"
+              @keyup.enter="submit" />
+          </div>
+        </div>
+      </form>
+    </td>
+  </tr>
 </template>
 
 <script>

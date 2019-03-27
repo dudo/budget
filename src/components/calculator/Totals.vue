@@ -27,13 +27,12 @@
                 { style: 'percent', maximumSignificantDigits: 3 }
               )
             }}
-            ({{
+            (assuming {{
               minimumLiabilityPercent.toLocaleString(
                 'en-us',
                 { style: 'percent', maximumSignificantDigits: 1 }
               )
-            }}
-            minimum payment)
+            }} minimum payment)
           </td>
         </tr>
         <tr>
